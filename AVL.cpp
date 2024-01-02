@@ -5,6 +5,7 @@ this->radice = nullptr;
 }
 
 AVL::~AVL() {
+
 }
 
 void AVL::rotazioneSinistra(Nodo *) {
@@ -14,8 +15,6 @@ void AVL::rotazioneSinistra(Nodo *) {
 void AVL::rotazioneDestra(Nodo *) {
 
 }
-
-
 
 void AVL::rotazioneSinistraDestra(Nodo *) {
 
@@ -29,56 +28,83 @@ void AVL::bilancia(Nodo *) {
 
 }
 
-void AVL::aggiornaAltezzaInserimento(Nodo *) {
-
-}
-
 void AVL::inserisci(int valore) {
     Nodo* nodo = new Nodo(valore);
-    if (this->radice != nullptr) {
-        auto nodoCorrente = this->radice;
-        Nodo* nodoPadre;
-        bool figlioSX;
-        while (nodoCorrente != nullptr) {
-            nodoPadre = nodoCorrente;
-            if (valore <= nodoCorrente->getDato()) {
-                nodoCorrente = nodoCorrente->getFiglioSinistro();
-                figlioSX = true;
-            }
-            else {
-                nodoCorrente = nodoCorrente->getFiglioDestro();
-                figlioSX = false;
-            }
-        }
-        nodo->setPadre(nodoPadre);
-        if (figlioSX) nodoPadre->setFiglioSinistro(nodo);
-        else nodoPadre->setFiglioDestro(nodo);
-        aggiornaAltezzaInserimento(nodo);
-        this->bilancia(nodo);
+    if (this->radice == nullptr) { //se l'albero è vuoto
+        this->radice = nodo; //il nuovo nodo diventa radice
+        return;
     }
-    else this->radice = nodo;
+    Nodo* nodoCorrente = this->cerca(valore);
+    if ( nodoCorrente->getDato() == valore) return; //termino se il valore è gia presente (duplicati non permessi)
+    if (valore < nodoCorrente->getDato()) { //controllo se nodo dev'essere figlio sinistro o destro del nodoCorrente...
+        nodoCorrente->setFiglioSinistro(nodo); //aggiorno il rispettivo link del padre
+        nodoCorrente->incrementaAltezzaSx(); //e ne incremento l'altezza del sottoalbero
+    }
+    else {
+          nodoCorrente->setFiglioDestro(nodo);
+          nodoCorrente->incrementaAltezzaDx();
+    }
+    nodo->setPadre(nodoCorrente); //aggiorno il link del figlio
+    while (nodoCorrente->getPadre() != nullptr) { //risalendo fino alla radice
+        if (nodoCorrente->getDato() < nodoCorrente->getPadre()->getDato())
+            nodoCorrente->getPadre()->incrementaAltezzaSx(); //aggiorno le altezze dei sottoalberi
+        else
+            nodoCorrente->getPadre()->incrementaAltezzaDx();
+        nodoCorrente=nodoCorrente->getPadre();
+    }
+    this->bilancia(nodo->getPadre()); //verifico ed eventualmente ripristino il bilanciamento dell'albero
 }
 
-Nodo *AVL::cerca(int valore) {
+
+
+/*Funzione per la ricerca nell'albero AVL.
+INPUT: valore da ricercare.
+OUTPUT: puntatore al nodo avente chiave il valore ricercato oppure il puntatore al nodo dove la ricerca termina in caso
+        di insuccesso. La verifica dei due casi è a carico dell'utilizzatore. In caso di ricerca in un AVL vuoto
+        restituisce nullptr. */
+Nodo* AVL::cerca(int valore) {
     Nodo* nodoCorrente = this->radice;
+    Nodo* nodoPrecedente = nodoCorrente;
     while (nodoCorrente != nullptr && nodoCorrente->getDato() != valore)
         nodoCorrente =  (valore < nodoCorrente->getDato())?nodoCorrente->getFiglioSinistro():nodoCorrente->getFiglioDestro();
-    return nodoCorrente;
+    return (nodoCorrente != nullptr)?nodoCorrente:nodoPrecedente;
 }
+
+
 
 void AVL::cancella(int valore) {
     Nodo* nodoTarget = this->cerca(valore);
-    if (nodoTarget == nullptr) return;
+    if (nodoTarget == nullptr || nodoTarget->getDato() != valore) return; //termina se il valore non è presente nell'albero
     else {
-        if (nodoTarget->getFiglioSinistro() == nullptr && nodoTarget->getFiglioDestro() == nullptr) {
-            aggiornaAltezzaEliminazione(nodoTarget->getPadre());
-
+        if (nodoTarget->getFiglioSinistro() == nullptr && nodoTarget->getFiglioDestro() == nullptr) { //se il nodo è una foglia...
+            Nodo* nodoCorrente = nodoTarget;
+            while (nodoCorrente->getPadre() != nullptr) {
+                if (nodoCorrente->getDato() < nodoCorrente->getPadre()->getDato())
+                    nodoCorrente->getPadre()->decrementaAltezzaSx();
+                else
+                    nodoCorrente->getPadre()->decrementaAltezzaDx();
+                nodoCorrente=nodoCorrente->getPadre();
+            }
+            if (nodoTarget->getDato() < nodoTarget->getPadre()->getDato()) //Verifica se il target è figlio sx o dx del padre...
+                nodoTarget->getPadre()->setFiglioSinistro(nullptr); //...e aggiorna i link corrispondenti.
+            else nodoTarget->getPadre()->setFiglioDestro(nullptr);
+            delete nodoTarget; //elimina il nodo cercato
+            return;
         }
+        if (nodoTarget->getFiglioSinistro() == nullptr || nodoTarget->getFiglioDestro() == nullptr) { //se il nodo ha un solo figlio
+            if (nodoTarget->getFiglioSinistro() == nullptr) nodoTarget->getPadre()->setFiglioDestro(nodoTarget->getFiglioDestro()); //se è quello destro:
+            else nodoTarget->getPadre()->setFiglioSinistro(nodoTarget->getFiglioSinistro()); //se è quello sinistro
+            delete nodoTarget;
+            return;
+        }
+        Nodo* nodoCorrente = nodoTarget->getFiglioSinistro();
+        while (nodoCorrente->getFiglioDestro() != nullptr) nodoCorrente = nodoCorrente->getFiglioDestro();
+        nodoTarget->setDato(nodoCorrente->getDato());
+        if (nodoCorrente->getDato() < nodoCorrente->getPadre()->getDato())
+            nodoCorrente->getPadre()->setFiglioSinistro(nullptr);
+        else nodoCorrente->getPadre()->setFiglioDestro(nullptr);
+        delete nodoCorrente;
     }
-}
-
-void AVL::aggiornaAltezzaEliminazione(Nodo *) {
-
 }
 
 

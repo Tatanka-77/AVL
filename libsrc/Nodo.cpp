@@ -44,3 +44,19 @@ inline void Nodo::setFiglioDestro(Nodo* nuovoFiglioDestro) {
 inline void Nodo::setPadre(Nodo* nuovoPadre ) {
     this->figlioSinistro = nuovoPadre;
 }
+
+inline void Nodo::incrementaAltezzaSx() {
+    this->altezzaSx++;
+}
+
+inline void Nodo::incrementaAltezzaDx() {
+    this->altezzaDx++;
+}
+
+inline void Nodo::decrementaAltezzaSx() {
+    this->altezzaSx--;
+}
+
+inline void Nodo::decrementaAltezzaDx() {
+    this->altezzaDx--;
+}

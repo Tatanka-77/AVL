@@ -23,6 +23,10 @@ public:
     void setFiglioSinistro(Nodo*);
     void setFiglioDestro(Nodo*);
     void setPadre(Nodo*);
+    void incrementaAltezzaSx();
+    void incrementaAltezzaDx();
+    void decrementaAltezzaSx();
+    void decrementaAltezzaDx();
 };
 
 
