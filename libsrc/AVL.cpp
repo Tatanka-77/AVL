@@ -79,22 +79,37 @@ void AVL::cancella(int valore) {
     if (nodoTarget == nullptr || nodoTarget->getDato() != valore) return; //termina se il valore non è presente nell'albero
     else {
         if (nodoTarget->getFiglioSinistro() == nullptr && nodoTarget->getFiglioDestro() == nullptr) { //se il nodo è una foglia...
-            Nodo* nodoCorrente = nodoTarget;
-            this->diminuisciAltezza(nodoCorrente);
-            if (nodoTarget->getDato() < nodoTarget->getPadre()->getDato()) //Verifica se il target è figlio sx o dx del padre...
-                nodoTarget->getPadre()->setFiglioSinistro(nullptr); //...e aggiorna i link corrispondenti.
-            else nodoTarget->getPadre()->setFiglioDestro(nullptr);
+            if (nodoTarget != this->radice) {
+                Nodo *nodoCorrente = nodoTarget;
+                this->diminuisciAltezza(nodoCorrente);
+                if (nodoTarget->getDato() <
+                    nodoTarget->getPadre()->getDato()) //Verifica se il target è figlio sx o dx del padre...
+                    nodoTarget->getPadre()->setFiglioSinistro(nullptr); //...e aggiorna i link corrispondenti.
+                else nodoTarget->getPadre()->setFiglioDestro(nullptr);
+            }
+            else this->radice= nullptr;
             delete nodoTarget; //elimina il nodo cercato
             return;
         }
         if (nodoTarget->getFiglioSinistro() == nullptr || nodoTarget->getFiglioDestro() == nullptr) { //se il nodo ha un solo figlio
             if (nodoTarget->getFiglioSinistro() == nullptr) {
-                nodoTarget->getPadre()->setFiglioDestro(nodoTarget->getFiglioDestro()); //se è quello destro:
-                nodoTarget->getFiglioDestro()->setPadre(nodoTarget->getPadre());
+                if (nodoTarget->getPadre() != nullptr) {
+                    nodoTarget->getPadre()->setFiglioDestro(nodoTarget->getFiglioDestro()); //se è quello destro:
+                    nodoTarget->getFiglioDestro()->setPadre(nodoTarget->getPadre());
+                }
+                else {
+                    this->radice=nodoTarget->getFiglioDestro();
+                    this->radice->setPadre(nullptr);
+                }
             }
             else {
-                nodoTarget->getPadre()->setFiglioSinistro(nodoTarget->getFiglioSinistro()); //se è quello sinistro
-                nodoTarget->getFiglioSinistro()->setPadre(nodoTarget->getPadre());
+                if (nodoTarget->getPadre() != nullptr) {
+                    nodoTarget->getPadre()->setFiglioSinistro(nodoTarget->getFiglioSinistro()); //se è quello sinistro
+                    nodoTarget->getFiglioSinistro()->setPadre(nodoTarget->getPadre());
+                } else {
+                    this->radice=nodoTarget->getFiglioSinistro();
+                    this->radice->setPadre(nullptr);
+                }
             }
             this->diminuisciAltezza(nodoTarget);
             delete nodoTarget;
@@ -102,10 +117,10 @@ void AVL::cancella(int valore) {
         }
         Nodo* nodoCorrente = nodoTarget->getFiglioSinistro(); //se il nodo ha due figli prendiamo il massimo del sottoalbero sx:
         while (nodoCorrente->getFiglioDestro() != nullptr) nodoCorrente = nodoCorrente->getFiglioDestro();
-        nodoTarget->setDato(nodoCorrente->getDato()); //scambiamo il dato del nodo corrente con quello che vogliamo eliminare
         if (nodoCorrente->getDato() < nodoCorrente->getPadre()->getDato()) nodoCorrente->getPadre()->setFiglioSinistro(nullptr);
         else nodoCorrente->getPadre()->setFiglioDestro(nullptr); //rimuoviamo il link orfano dal padre
         this->diminuisciAltezza(nodoCorrente);
+        nodoTarget->setDato(nodoCorrente->getDato()); //scambiamo il dato del nodo corrente con quello che vogliamo eliminare
         delete nodoCorrente;
     }
 }
