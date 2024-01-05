@@ -1,6 +1,6 @@
 #include "Nodo.h"
 
-inline int Nodo::getDato() const {
+int Nodo::getDato() const {
     return this->dato;
 }
 
@@ -13,50 +13,50 @@ Nodo::Nodo(int dato) {
     this->altezzaDx= 0;
 }
 
-inline Nodo* Nodo::getPadre() {
+Nodo* Nodo::getPadre() {
     return this->padre;
 }
 
-inline Nodo *Nodo::getFiglioSinistro() {
+Nodo *Nodo::getFiglioSinistro() {
     return this->figlioSinistro;
 }
 
-inline Nodo *Nodo::getFiglioDestro() {
+Nodo *Nodo::getFiglioDestro() {
     return this->figlioDestro;
 }
 
-inline int Nodo::getBilanciamento() const {
+int Nodo::getBilanciamento() const {
     return this->altezzaSx - this->altezzaDx;
 }
 
-inline void Nodo::setDato(int valore) {
+void Nodo::setDato(int valore) {
     this->dato = valore;
 }
 
-inline void Nodo::setFiglioSinistro(Nodo* nuovoFiglioSinistro) {
+void Nodo::setFiglioSinistro(Nodo* nuovoFiglioSinistro) {
     this->figlioSinistro = nuovoFiglioSinistro;
 }
 
-inline void Nodo::setFiglioDestro(Nodo* nuovoFiglioDestro) {
-    this->figlioSinistro = nuovoFiglioDestro;
+void Nodo::setFiglioDestro(Nodo* nuovoFiglioDestro) {
+    this->figlioDestro = nuovoFiglioDestro;
 }
 
-inline void Nodo::setPadre(Nodo* nuovoPadre ) {
-    this->figlioSinistro = nuovoPadre;
+void Nodo::setPadre(Nodo* nuovoPadre ) {
+    this->padre = nuovoPadre;
 }
 
-inline void Nodo::incrementaAltezzaSx() {
+void Nodo::incrementaAltezzaSx() {
     this->altezzaSx++;
 }
 
-inline void Nodo::incrementaAltezzaDx() {
+void Nodo::incrementaAltezzaDx() {
     this->altezzaDx++;
 }
 
-inline void Nodo::decrementaAltezzaSx() {
+void Nodo::decrementaAltezzaSx() {
     this->altezzaSx--;
 }
 
-inline void Nodo::decrementaAltezzaDx() {
+void Nodo::decrementaAltezzaDx() {
     this->altezzaDx--;
 }
