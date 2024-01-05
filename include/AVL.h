@@ -10,6 +10,7 @@ private:
     void rotazioneSinistraDestra(Nodo*);
     void rotazioneDestraSinistra(Nodo*);
     void bilancia(Nodo*);
+    void aggiornaAltezza(Nodo *nodoCorrente);
 
 
 public:
