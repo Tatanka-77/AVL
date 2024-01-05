@@ -1,8 +1,4 @@
 #pragma once
-#include <iostream>
-
-using namespace std;
-
 
 class Nodo {
     int dato;
@@ -13,7 +9,7 @@ class Nodo {
     int altezzaDx;
 
 public:
-    explicit Nodo(int);
+    Nodo(int);
     int getDato() const;
     Nodo* getPadre();
     Nodo* getFiglioSinistro();

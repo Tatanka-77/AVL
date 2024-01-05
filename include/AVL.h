@@ -10,14 +10,14 @@ private:
     void rotazioneSinistraDestra(Nodo*);
     void rotazioneDestraSinistra(Nodo*);
     void bilancia(Nodo*);
-    void aggiornaAltezza(Nodo *nodoCorrente);
-
+    void diminuisciAltezza(Nodo*);
+    void aumentaAltezza(Nodo*);
 
 public:
     AVL();
     ~AVL();
-    void inserisci (int);
-    Nodo* cerca (int);
+    void inserisci(int);
+    Nodo* cerca(int);
     void cancella(int);
 
 };

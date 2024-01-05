@@ -5,27 +5,27 @@ AVL::AVL() {
 }
 
 AVL::~AVL() {
-
+    //todo
 }
 
-void AVL::rotazioneSinistra(Nodo *) {
-
+void AVL::rotazioneSinistra(Nodo*) {
+    //todo
 }
 
-void AVL::rotazioneDestra(Nodo *) {
-
+void AVL::rotazioneDestra(Nodo*) {
+    //todo
 }
 
-void AVL::rotazioneSinistraDestra(Nodo *) {
-
+void AVL::rotazioneSinistraDestra(Nodo*) {
+    //todo
 }
 
-void AVL::rotazioneDestraSinistra(Nodo *) {
-
+void AVL::rotazioneDestraSinistra(Nodo*) {
+    //todo
 }
 
-void AVL::bilancia(Nodo *) {
-
+void AVL::bilancia(Nodo*) {
+    //todo
 }
 
 void AVL::inserisci(int valore) {
@@ -80,7 +80,7 @@ void AVL::cancella(int valore) {
     else {
         if (nodoTarget->getFiglioSinistro() == nullptr && nodoTarget->getFiglioDestro() == nullptr) { //se il nodo è una foglia...
             Nodo* nodoCorrente = nodoTarget;
-            this->aggiornaAltezza(nodoCorrente);
+            this->diminuisciAltezza(nodoCorrente);
             if (nodoTarget->getDato() < nodoTarget->getPadre()->getDato()) //Verifica se il target è figlio sx o dx del padre...
                 nodoTarget->getPadre()->setFiglioSinistro(nullptr); //...e aggiorna i link corrispondenti.
             else nodoTarget->getPadre()->setFiglioDestro(nullptr);
@@ -96,7 +96,7 @@ void AVL::cancella(int valore) {
                 nodoTarget->getPadre()->setFiglioSinistro(nodoTarget->getFiglioSinistro()); //se è quello sinistro
                 nodoTarget->getFiglioSinistro()->setPadre(nodoTarget->getPadre());
             }
-            this->aggiornaAltezza(nodoTarget);
+            this->diminuisciAltezza(nodoTarget);
             delete nodoTarget;
             return;
         }
@@ -105,12 +105,12 @@ void AVL::cancella(int valore) {
         nodoTarget->setDato(nodoCorrente->getDato()); //scambiamo il dato del nodo corrente con quello che vogliamo eliminare
         if (nodoCorrente->getDato() < nodoCorrente->getPadre()->getDato()) nodoCorrente->getPadre()->setFiglioSinistro(nullptr);
         else nodoCorrente->getPadre()->setFiglioDestro(nullptr); //rimuoviamo il link orfano dal padre
-        this->aggiornaAltezza(nodoCorrente);
+        this->diminuisciAltezza(nodoCorrente);
         delete nodoCorrente;
     }
 }
 
-void AVL::aggiornaAltezza(Nodo* nodoCorrente) {
+void AVL::diminuisciAltezza(Nodo* nodoCorrente) {
     while (nodoCorrente->getPadre() != nullptr) {
         if (nodoCorrente->getDato() < nodoCorrente->getPadre()->getDato())
             nodoCorrente->getPadre()->decrementaAltezzaSx();
@@ -120,4 +120,12 @@ void AVL::aggiornaAltezza(Nodo* nodoCorrente) {
     }
 }
 
-
+void AVL::aumentaAltezza(Nodo* nodoCorrente) {
+    while (nodoCorrente->getPadre() != nullptr) {
+        if (nodoCorrente->getDato() < nodoCorrente->getPadre()->getDato())
+            nodoCorrente->getPadre()->incrementaAltezzaSx();
+        else
+            nodoCorrente->getPadre()->incrementaAltezzaDx();
+        nodoCorrente=nodoCorrente->getPadre();
+    }
+}

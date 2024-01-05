@@ -10,7 +10,7 @@ Nodo::Nodo(int dato) {
     this->figlioSinistro = nullptr;
     this->figlioDestro = nullptr;
     this->altezzaSx= 0;
-    this->altezzaDx=0;
+    this->altezzaDx= 0;
 }
 
 inline Nodo* Nodo::getPadre() {
