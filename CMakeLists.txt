@@ -6,8 +6,12 @@ set(CMAKE_CXX_STANDARD 20)
 include_directories(.)
 include_directories(include)
 
-add_executable(AVL_local
-        libsrc/Nodo.cpp
-        libsrc/AVL.cpp
+add_executable(AVL_testapp
+        main.cpp
         include/Nodo.h
-        include/AVL.h)
+        include/AVL.h
+)
+add_library(Nodo libsrc/Nodo.cpp include/Nodo.h)
+add_library(AVL libsrc/AVL.cpp include/AVL.h)
+
+target_link_libraries(AVL_testapp Nodo AVL)
