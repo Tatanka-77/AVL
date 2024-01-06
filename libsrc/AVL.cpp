@@ -45,6 +45,11 @@ void AVL::inserisci(int valore) {
         nodoCorrente->incrementaAltezzaDx();
     }
     nodo->setPadre(nodoCorrente); //aggiorno il link del figlio
+    this->aumentaAltezza(nodoCorrente);
+    this->bilancia(nodo->getPadre()); //verifico ed eventualmente ripristino il bilanciamento dell'albero
+}
+
+void AVL::aumentaAltezza(Nodo *nodoCorrente) {
     while (nodoCorrente->getPadre() != nullptr) { //risalendo fino alla radice
         if (nodoCorrente->getDato() < nodoCorrente->getPadre()->getDato())
             nodoCorrente->getPadre()->incrementaAltezzaSx(); //aggiorno le altezze dei sottoalberi
@@ -52,9 +57,7 @@ void AVL::inserisci(int valore) {
             nodoCorrente->getPadre()->incrementaAltezzaDx();
         nodoCorrente=nodoCorrente->getPadre();
     }
-    this->bilancia(nodo->getPadre()); //verifico ed eventualmente ripristino il bilanciamento dell'albero
 }
-
 
 
 /*Funzione per la ricerca nell'albero AVL.
@@ -135,12 +138,4 @@ void AVL::diminuisciAltezza(Nodo* nodoCorrente) {
     }
 }
 
-void AVL::aumentaAltezza(Nodo* nodoCorrente) {
-    while (nodoCorrente->getPadre() != nullptr) {
-        if (nodoCorrente->getDato() < nodoCorrente->getPadre()->getDato())
-            nodoCorrente->getPadre()->incrementaAltezzaSx();
-        else
-            nodoCorrente->getPadre()->incrementaAltezzaDx();
-        nodoCorrente=nodoCorrente->getPadre();
-    }
-}
+
