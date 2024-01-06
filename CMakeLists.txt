@@ -12,5 +12,4 @@ add_executable(AVL_testapp
 add_library(Nodo libsrc/Nodo.cpp include/Nodo.h)
 add_library(AVL libsrc/AVL.cpp include/AVL.h)
 
-#target_link_libraries(AVL Nodo)
 target_link_libraries(AVL_testapp AVL Nodo)
