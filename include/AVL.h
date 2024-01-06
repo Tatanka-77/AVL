@@ -7,8 +7,7 @@ class AVL {
 private:
     void rotazioneSinistra(Nodo*);
     void rotazioneDestra(Nodo*);
-    void rotazioneSinistraDestra(Nodo*);
-    void rotazioneDestraSinistra(Nodo*);
+
     void bilancia(Nodo*);
     void diminuisciAltezza(Nodo*);
     void aumentaAltezza(Nodo*);

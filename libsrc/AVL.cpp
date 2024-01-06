@@ -16,16 +16,25 @@ void AVL::rotazioneDestra(Nodo*) {
     //todo
 }
 
-void AVL::rotazioneSinistraDestra(Nodo*) {
-    //todo
-}
-
-void AVL::rotazioneDestraSinistra(Nodo*) {
-    //todo
-}
-
-void AVL::bilancia(Nodo*) {
-    //todo
+void AVL::bilancia(Nodo* nodo) {
+    Nodo* nodoCorrente = nodo;
+    while (nodoCorrente != nullptr) {
+        if (nodoCorrente->getBilanciamento() > 1 || nodoCorrente->getBilanciamento() < -1) {
+            if (nodoCorrente->getBilanciamento() == -2 && nodoCorrente->getFiglioDestro()->getBilanciamento() < 1 )
+                this->rotazioneSinistra(nodoCorrente->getFiglioDestro());
+            if (nodoCorrente->getBilanciamento() == 2 && nodoCorrente->getFiglioSinistro()->getBilanciamento() > -1 )
+                this->rotazioneDestra(nodoCorrente->getFiglioSinistro());
+            if (nodoCorrente->getBilanciamento() == -2 && nodoCorrente->getFiglioDestro()->getBilanciamento() == 1 ) {
+                this->rotazioneDestra(nodoCorrente->getFiglioDestro()->getFiglioSinistro());
+                this->rotazioneSinistra(nodoCorrente->getFiglioDestro());
+            }
+            if (nodoCorrente->getBilanciamento() == 2 && nodoCorrente->getFiglioSinistro()->getBilanciamento() == -1 ) {
+                this->rotazioneSinistra(nodoCorrente->getFiglioSinistro()->getFiglioDestro());
+                this->rotazioneDestra(nodoCorrente->getFiglioSinistro());
+            }
+        }
+        nodoCorrente=nodoCorrente->getPadre();
+    }
 }
 
 void AVL::inserisci(int valore) {
